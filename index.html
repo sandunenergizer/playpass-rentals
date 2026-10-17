@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlayPass Rentals – Rent the game. Skip the price tag.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+:root{--night:#120f24;--grape:#241b4d;--cyan:#35e0d0;--sun:#ffd23f;--mist:#f1effc;--pink:#ff5d8f}
+body{font-family:'Nunito Sans',sans-serif;background:var(--night);color:var(--mist);line-height:1.65}
+h1,h2,h3,.navbar-brand,.btn{font-family:'Chakra Petch',sans-serif}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.05;font-weight:700}
+h2{font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem)}
+section{padding:5rem 0;position:relative}
+.text-cyan{color:var(--cyan)}
+.navbar{transition:background .3s,box-shadow .3s;padding:.9rem 0}
+.navbar.scrolled{background:rgba(18,15,36,.94);box-shadow:0 2px 24px rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+.navbar-brand{color:var(--sun)!important;font-weight:700;letter-spacing:.03em}
+.nav-link{color:var(--mist)!important;transition:color .2s}
+.nav-link:hover,.nav-link:focus{color:var(--cyan)!important}
+.btn-play{background:var(--cyan);color:var(--night);font-weight:700;border:0;border-radius:.4rem;padding:.8rem 1.8rem;box-shadow:0 5px 0 #17a699;transition:transform .15s,box-shadow .15s}
+.btn-play:hover{background:var(--cyan);color:var(--night);transform:translateY(3px);box-shadow:0 2px 0 #17a699}
+.btn-ghost{border:2px solid var(--mist);color:var(--mist);padding:.75rem 1.8rem;transition:background .2s,color .2s}
+.btn-ghost:hover{background:var(--mist);color:var(--night)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+/* Hero */
+#hero{min-height:100vh;display:flex;align-items:center;overflow:hidden;
+ background:radial-gradient(circle at 80% 30%,#3b2a85 0,transparent 55%),radial-gradient(circle at 10% 90%,#0e5f63 0,transparent 45%),var(--night)}
+#hero::before{content:"";position:absolute;inset:0;opacity:.18;
+ background-image:linear-gradient(var(--cyan) 1px,transparent 1px),linear-gradient(90deg,var(--cyan) 1px,transparent 1px);
+ background-size:48px 48px;transform:perspective(500px) rotateX(55deg) translateY(35%);transform-origin:bottom;animation:grid 6s linear infinite}
+@keyframes grid{to{background-position:0 48px}}
+.hero-art{position:relative;max-width:520px;margin:auto}
+.hero-art .ctrl{width:100%;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 25px 35px rgba(53,224,208,.3))}
+@keyframes float{50%{transform:translateY(-16px) rotate(-2deg)}}
+.pixel{position:absolute;width:14px;height:14px;background:var(--sun);animation:drift 6s ease-in-out infinite}
+.pixel:nth-child(2){background:var(--pink);left:8%;top:60%;animation-delay:-2s}
+.pixel:nth-child(3){background:var(--cyan);right:6%;top:20%;animation-delay:-4s}
+.pixel:nth-child(1){left:14%;top:12%}
+@keyframes drift{50%{transform:translateY(-26px) rotate(90deg)}}
+.img-slot{margin-top:1rem;border:2px dashed rgba(241,239,252,.4);border-radius:.6rem;padding:.6rem;font-size:.85rem;text-align:center;color:#c9c4ea}
+
+/* Cards */
+.tile{background:var(--grape);border-radius:.8rem;padding:1.8rem;height:100%;border-bottom:4px solid transparent;transition:transform .25s,border-color .25s,background .25s}
+.tile:hover{transform:translateY(-8px);border-color:var(--cyan);background:#2d2260}
+.tile svg{width:56px;height:56px;margin-bottom:1rem}
+.band{background:var(--grape)}
+.price{font-family:'Chakra Petch';font-size:2rem;color:var(--sun)}
+.story{background:var(--night);border-left:4px solid var(--pink);border-radius:.5rem;padding:1.6rem;height:100%;transition:transform .25s}
+.story:hover{transform:rotate(-1deg) scale(1.02)}
+.avatar{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--night);background:var(--sun);margin-right:.7rem}
+.form-control{background:var(--night);border:2px solid #3d3377;color:var(--mist);transition:border-color .2s,box-shadow .2s}
+.form-control:focus{background:var(--night);color:var(--mist);border-color:var(--cyan);box-shadow:0 0 0 .25rem rgba(53,224,208,.25)}
+footer{background:#0b0919;padding:2rem 0;color:#a9a3d1}
+
+/* One reveal moment: sections rise in once */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="nav">
+ <div class="container">
+  <a class="navbar-brand" href="#hero">PlayPass Rentals</a>
+  <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+  <div class="collapse navbar-collapse" id="menu">
+   <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+    <li class="nav-item"><a class="nav-link" href="#stories">Stories</a></li>
+    <li class="nav-item"><a class="btn btn-play btn-sm ms-lg-2" href="#contact">Contact Us</a></li>
+   </ul>
+  </div>
+ </div>
+</nav>
+
+<header id="hero">
+ <div class="container position-relative">
+  <div class="row align-items-center g-5">
+   <div class="col-lg-6">
+    <h1>Rent the game.<br><span class="text-cyan">Skip the price tag.</span></h1>
+    <p class="lead my-4">New releases, retro classics and full console bundles delivered to your door. Play for a weekend or a month, then send it back. Shipping both ways is on us.</p>
+    <a href="#products" class="btn btn-play btn-lg me-2 mb-2">Browse games</a>
+    <a href="#how" class="btn btn-ghost btn-lg mb-2">How it works</a>
+   </div>
+   <div class="col-lg-6">
+    <div class="hero-art">
+     <span class="pixel"></span><span class="pixel"></span><span class="pixel"></span>
+     <!-- IMAGE PLACEHOLDER: replace this inline SVG with <img src="hero.png" alt="..."> once you generate an image -->
+        <img src="hero.png" alt="Game controller above a glowing grid" class="ctrl img-fluid">
+    </div>
+   </div>
+  </div>
+ </div>
+</header>
+
+<section id="products" class="band">
+ <div class="container reveal">
+  <h2 class="mb-2">Products</h2>
+  <p class="mb-5">Everything arrives cleaned, tested and ready to plug in.</p>
+  <div class="row g-4">
+   <div class="col-md-6 col-lg-3"><div class="tile">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="20" width="48" height="26" rx="6" fill="#35e0d0"/><circle cx="22" cy="33" r="5" fill="#241b4d"/><rect x="34" y="28" width="16" height="10" rx="2" fill="#241b4d"/></svg>
+    <h3 class="h5">Console bundles</h3><p>Latest-generation consoles with two controllers and a headset.</p><div class="price">from €14/week</div></div></div>
+   <div class="col-md-6 col-lg-3"><div class="tile">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="8" width="36" height="48" rx="4" fill="#ffd23f"/><rect x="20" y="14" width="24" height="20" fill="#241b4d"/><rect x="22" y="42" width="20" height="6" fill="#241b4d"/></svg>
+    <h3 class="h5">New releases</h3><p>This year's big titles for every major platform, from day one.</p><div class="price">from €5/week</div></div></div>
+   <div class="col-md-6 col-lg-3"><div class="tile">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 40l8-18h28l8 18v8H10z" fill="#ff5d8f"/><circle cx="24" cy="34" r="4" fill="#241b4d"/><circle cx="42" cy="34" r="4" fill="#241b4d"/></svg>
+    <h3 class="h5">Retro classics</h3><p>Cartridge-era favourites and the consoles that play them.</p><div class="price">from €3/week</div></div></div>
+   <div class="col-md-6 col-lg-3"><div class="tile">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 36a20 20 0 0140 0v10a6 6 0 01-6 6h-4V38h10M12 36v0" fill="none" stroke="#35e0d0" stroke-width="5"/><rect x="8" y="34" width="10" height="18" rx="3" fill="#35e0d0"/></svg>
+    <h3 class="h5">VR and gear</h3><p>Headsets, racing wheels and arcade sticks to try before you buy.</p><div class="price">from €9/week</div></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="services">
+ <div class="container reveal">
+  <h2 class="mb-5">Services</h2>
+  <div class="row g-4" id="how">
+   <div class="col-md-4"><div class="tile"><h3 class="h5 text-cyan">Free delivery both ways</h3><p>We ship in 1 to 2 working days and include a prepaid return label in the box.</p></div></div>
+   <div class="col-md-4"><div class="tile"><h3 class="h5 text-cyan">Rent-to-own</h3><p>Love it? Your rental fees count toward buying the game or console.</p></div></div>
+   <div class="col-md-4"><div class="tile"><h3 class="h5 text-cyan">Party and event hire</h3><p>Consoles, screens and tournament setups for birthdays, LAN nights and offices.</p></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="about" class="band">
+ <div class="container reveal">
+  <div class="row align-items-center g-5">
+   <div class="col-lg-6">
+    <h2>About Us</h2>
+    <p>PlayPass Rentals started in a Helsinki flat with one shelf of games and a lot of friends who kept asking to borrow them. Today we are a small team of gamers who test every disc, clean every controller and answer every email ourselves.</p>
+    <p>We think nobody should pay €70 to find out a game isn't for them.</p>
+   </div>
+   <div class="col-lg-6">
+    <div class="row text-center g-3">
+     <div class="col-4"><div class="price">2,000+</div><small>titles</small></div>
+     <div class="col-4"><div class="price">48 h</div><small>average delivery</small></div>
+     <div class="col-4"><div class="price">4.9/5</div><small>customer rating</small></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="stories">
+ <div class="container reveal">
+  <h2 class="mb-5">User stories</h2>
+  <div class="row g-4">
+   <div class="col-md-4"><div class="story"><p>“I rented a new RPG for two weeks, finished it, and sent it back. I saved about €55 and didn't have a dusty case on my shelf.”</p><span class="avatar">M</span><strong>Mika, student</strong></div></div>
+   <div class="col-md-4"><div class="story"><p>“My kids wanted a console for their birthday. We rented one for the party weekend and they picked which one to buy afterward.”</p><span class="avatar">S</span><strong>Sanna, parent of two</strong></div></div>
+   <div class="col-md-4"><div class="story"><p>“We hire a four-console tournament kit for our office Friday. Setup took ten minutes and nobody talked about work.”</p><span class="avatar">J</span><strong>Joonas, team lead</strong></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="contact" class="band">
+ <div class="container reveal">
+  <div class="row g-5">
+   <div class="col-lg-5">
+    <h2>Contact Us</h2>
+    <p>Questions about a title, a bundle or an event? We reply within one working day.</p>
+    <p class="mb-1"><strong>Email:</strong> hello@playpass.example</p>
+    <p class="mb-1"><strong>Phone:</strong> +358 10 123 4567</p>
+    <p><strong>Pickup point:</strong> Mannerheimintie 1, Helsinki</p>
+   </div>
+   <div class="col-lg-7">
+    <form id="form" novalidate>
+     <div class="row g-3">
+      <div class="col-md-6"><label class="form-label" for="n">Name</label><input id="n" class="form-control" required></div>
+      <div class="col-md-6"><label class="form-label" for="e">Email</label><input id="e" type="email" class="form-control" required></div>
+      <div class="col-12"><label class="form-label" for="m">What would you like to play?</label><textarea id="m" rows="4" class="form-control" required></textarea></div>
+      <div class="col-12"><button class="btn btn-play" type="submit">Send message</button> <span id="ok" class="ms-3 text-cyan" role="status"></span></div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+</section>
+
+<footer><div class="container text-center">© 2026 PlayPass Rentals. Play more, own less.</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.getElementById('form').addEventListener('submit',ev=>{
+  ev.preventDefault();
+  const ok=[...ev.target.querySelectorAll('[required]')].every(f=>f.value.trim());
+  document.getElementById('ok').textContent=ok?'Message sent. We will reply within one working day.':'Please fill in every field.';
+  if(ok)ev.target.reset();
+});
+</script>
+</body>
+</html>
